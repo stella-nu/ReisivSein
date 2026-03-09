@@ -1,0 +1,82 @@
+[
+  {
+    "id": "VIS-0001",
+    "riik": "Prantsusmaa",
+    "linn": "Pariis",
+    "aasta": "2022",
+    "kirjeldus": "Postkaardi põhjal on teada külastus Pariisi. Täpsem info osaleja või külastuse eesmärgi kohta puudub.",
+    "koordinaadid": [48.8566, 2.3522],
+    "pilt": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80",
+    "riigiKood": "FR"
+  },
+  {
+    "id": "VIS-0002",
+    "riik": "Prantsusmaa",
+    "linn": "Lyon",
+    "aasta": "2023",
+    "kirjeldus": "Postkaardi põhjal on teada külastus Lyoni. Täpsem info osaleja või külastuse eesmärgi kohta puudub.",
+    "koordinaadid": [45.764, 4.8357],
+    "pilt": "https://images.unsplash.com/photo-1524396309943-e03f5249f002?auto=format&fit=crop&w=1200&q=80",
+    "riigiKood": "FR"
+  },
+  {
+    "id": "VIS-0003",
+    "riik": "Saksamaa",
+    "linn": "München",
+    "aasta": "2021",
+    "kirjeldus": "Postkaardi põhjal on teada külastus Münchenisse. Täpsem info osaleja või külastuse eesmärgi kohta puudub.",
+    "koordinaadid": [48.1351, 11.582],
+    "pilt": "https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&w=1200&q=80",
+    "riigiKood": "DE"
+  },
+  {
+    "id": "VIS-0004",
+    "riik": "Saksamaa",
+    "linn": "Berliin",
+    "aasta": "2024",
+    "kirjeldus": "Postkaardi põhjal on teada külastus Berliini. Täpsem info osaleja või külastuse eesmärgi kohta puudub.",
+    "koordinaadid": [52.52, 13.405],
+    "pilt": "https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=1200&q=80",
+    "riigiKood": "DE"
+  },
+  {
+    "id": "VIS-0005",
+    "riik": "Soome",
+    "linn": "Helsingi",
+    "aasta": "2023",
+    "kirjeldus": "Postkaardi põhjal on teada külastus Helsingisse. Täpsem info osaleja või külastuse eesmärgi kohta puudub.",
+    "koordinaadid": [60.1699, 24.9384],
+    "pilt": "https://images.unsplash.com/photo-1522881451255-f59ad836fdfb?auto=format&fit=crop&w=1200&q=80",
+    "riigiKood": "FI"
+  },
+  {
+    "id": "VIS-0006",
+    "riik": "Hispaania",
+    "linn": "Madrid",
+    "aasta": "2022",
+    "kirjeldus": "Postkaardi põhjal on teada külastus Madridi. Täpsem info osaleja või külastuse eesmärgi kohta puudub.",
+    "koordinaadid": [40.4168, -3.7038],
+    "pilt": "https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=1200&q=80",
+    "riigiKood": "ES"
+  },
+  {
+    "id": "VIS-0007",
+    "riik": "Itaalia",
+    "linn": "Rooma",
+    "aasta": "2020",
+    "kirjeldus": "Postkaardi põhjal on teada külastus Rooma. Täpsem info osaleja või külastuse eesmärgi kohta puudub.",
+    "koordinaadid": [41.9028, 12.4964],
+    "pilt": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80",
+    "riigiKood": "IT"
+  },
+  {
+    "id": "VIS-0008",
+    "riik": "Portugal",
+    "linn": "Lissabon",
+    "aasta": "2024",
+    "kirjeldus": "Postkaardi põhjal on teada külastus Lissaboni. Täpsem info osaleja või külastuse eesmärgi kohta puudub.",
+    "koordinaadid": [38.7223, -9.1393],
+    "pilt": "https://images.unsplash.com/photo-1513735492246-483525079686?auto=format&fit=crop&w=1200&q=80",
+    "riigiKood": "PT"
+  }
+]
