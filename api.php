@@ -19,22 +19,42 @@ if (!is_array($data)) {
     exit;
 }
 
+function lowerText($value)
+{
+    $text = (string)$value;
+    if (function_exists('mb_strtolower')) {
+        return mb_strtolower($text, 'UTF-8');
+    }
+
+    return strtolower($text);
+}
+
+function containsText($haystack, $needle)
+{
+    if ($needle === '') {
+        return true;
+    }
+
+    return strpos($haystack, $needle) !== false;
+}
+
 $riik = isset($_GET['riik']) ? trim((string)$_GET['riik']) : '';
 $aasta = isset($_GET['aasta']) ? trim((string)$_GET['aasta']) : '';
 $otsi = isset($_GET['otsi']) ? trim((string)$_GET['otsi']) : '';
 
 $result = array_values(array_filter($data, function ($item) use ($riik, $aasta, $otsi) {
-    $matchRiik = $riik === '' || (isset($item['riik']) && mb_strtolower($item['riik']) === mb_strtolower($riik));
+    $riigiNimi = isset($item['riik']) ? lowerText($item['riik']) : '';
+    $matchRiik = $riik === '' || ($riigiNimi !== '' && $riigiNimi === lowerText($riik));
     $matchAasta = $aasta === '' || (isset($item['aasta']) && (string)$item['aasta'] === $aasta);
 
-    $haystack = mb_strtolower(
+    $haystack = lowerText(
         implode(' ', [
             $item['riik'] ?? '',
             $item['linn'] ?? '',
             $item['kirjeldus'] ?? ''
         ])
     );
-    $matchOtsi = $otsi === '' || str_contains($haystack, mb_strtolower($otsi));
+    $matchOtsi = containsText($haystack, lowerText($otsi));
 
     return $matchRiik && $matchAasta && $matchOtsi;
 }));
