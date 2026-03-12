@@ -64,7 +64,16 @@ button, input, select { font: inherit; }
 }
 
 .hero__content {
+  position: relative;
   padding: 28px;
+}
+
+.hero__top-controls {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  gap: 8px;
 }
 
 .eyebrow {
@@ -78,6 +87,7 @@ button, input, select { font: inherit; }
 
 .hero h1 {
   margin: 0;
+  padding-right: 220px;
   font-size: clamp(2rem, 3vw, 3.2rem);
   line-height: 1.05;
 }
@@ -103,6 +113,12 @@ button, input, select { font: inherit; }
   transition: transform .18s ease, opacity .18s ease, background .18s ease;
 }
 .button:hover { transform: translateY(-1px); }
+.button--compact {
+  padding: 8px 12px;
+  font-size: .86rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
 .button--primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-strong));
   color: #fff;
@@ -311,6 +327,7 @@ button, input, select { font: inherit; }
   }
   .sidebar { position: static; }
   #map { height: 500px; }
+  .hero h1 { padding-right: 0; }
 }
 
 @media (max-width: 640px) {
@@ -318,6 +335,10 @@ button, input, select { font: inherit; }
   .hero__content,
   .hero__stats,
   .card { padding: 16px; border-radius: 20px; }
+  .hero__top-controls {
+    position: static;
+    margin-bottom: 14px;
+  }
   .gallery { grid-template-columns: 1fr; }
   #map { height: 420px; }
 }

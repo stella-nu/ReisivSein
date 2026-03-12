@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Digiteeritud reisikaart</title>
+  <title>Reisiv sein</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,27 +15,29 @@
   <div class="page-shell">
     <header class="hero">
       <div class="hero__content">
-        <p class="eyebrow">Digiteeritud reisiv sein</p>
-        <h1>Reisikaart PHP + JavaScript lahendusega</h1>
-        <p class="hero__text">
-          Külastused loetakse serveripoolel JSON-andmestikust, kuvatakse interaktiivsel maailmakaardil ning neid saab filtreerida riigi, aasta ja otsingu järgi.
+        <div class="hero__top-controls">
+          <button id="themeToggle" class="button button--primary button--compact" type="button" aria-pressed="false">🌙 Tume vaade</button>
+          <button id="translateToggle" class="button button--ghost button--compact" type="button">EN</button>
+        </div>
+        <h1 id="pageTitle">Reisiv sein</h1>
+        <p id="heroText" class="hero__text">
+          Külastused kuvatakse interaktiivsel maailmakaardil ning neid saab filtreerida riigi, aasta ja otsingu järgi.
         </p>
         <div class="hero__actions">
-          <button id="themeToggle" class="button button--primary" type="button" aria-pressed="false">🌙 Tume vaade</button>
           <button id="clearFilters" class="button button--ghost" type="button">Lähtesta filtrid</button>
         </div>
       </div>
       <div class="hero__stats">
         <div class="stat-card">
-          <span class="stat-card__label">Kokku külastusi</span>
+          <span id="labelVisitsTotal" class="stat-card__label">Kokku külastusi</span>
           <strong id="visitsTotal">0</strong>
         </div>
         <div class="stat-card">
-          <span class="stat-card__label">Riike kaardil</span>
+          <span id="labelCountriesTotal" class="stat-card__label">Riike kaardil</span>
           <strong id="countriesTotal">0</strong>
         </div>
         <div class="stat-card">
-          <span class="stat-card__label">Valitud riik</span>
+          <span id="labelSelectedCountry" class="stat-card__label">Valitud riik</span>
           <strong id="selectedCountry">Kõik</strong>
         </div>
       </div>
@@ -43,29 +45,29 @@
 
     <main class="layout">
       <aside class="sidebar card">
-        <h2>Filtrid</h2>
+        <h2 id="filtersTitle">Filtrid</h2>
 
         <label class="field">
-          <span>Riik</span>
+          <span id="countryFilterLabel">Riik</span>
           <select id="countryFilter">
             <option value="">Kõik riigid</option>
           </select>
         </label>
 
         <label class="field">
-          <span>Aasta</span>
+          <span id="yearFilterLabel">Aasta</span>
           <select id="yearFilter">
             <option value="">Kõik aastad</option>
           </select>
         </label>
 
         <label class="field">
-          <span>Otsi</span>
+          <span id="searchLabel">Otsi</span>
           <input id="searchInput" type="search" placeholder="Näiteks Pariis või Soome">
         </label>
 
         <section class="card card--soft sidebar__section">
-          <h3>Riikide statistika</h3>
+          <h3 id="statsTitle">Riikide statistika</h3>
           <ul id="statsList" class="stats-list"></ul>
         </section>
       </aside>
@@ -74,8 +76,8 @@
         <div class="card map-card">
           <div class="section-heading">
             <div>
-              <h2>Interaktiivne maailmakaart</h2>
-              <p>Klikk riigile või markerile filtreerib galeriid.</p>
+              <h2 id="mapTitle">Interaktiivne maailmakaart</h2>
+              <p id="mapSubtitle">Klikk riigile või markerile filtreerib galeriid.</p>
             </div>
           </div>
           <div id="map"></div>
@@ -84,7 +86,7 @@
         <div class="card gallery-card">
           <div class="section-heading">
             <div>
-              <h2>Külastused</h2>
+              <h2 id="galleryTitle">Külastused</h2>
               <p id="resultsInfo">Andmeid laaditakse…</p>
             </div>
           </div>

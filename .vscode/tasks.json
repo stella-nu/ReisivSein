@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run ReisivSein (PHP server)",
+			"type": "shell",
+			"command": "C:\\Users\\Stella\\AppData\\Local\\Microsoft\\WinGet\\Packages\\PHP.PHP.8.3_Microsoft.Winget.Source_8wekyb3d8bbwe\\php.exe",
+			"args": [
+				"-S",
+				"localhost:8000"
+			],
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}
