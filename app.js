@@ -55,7 +55,7 @@ const translations = {
   et: {
     pageTitle: 'Reisiv sein',
     heroText: 'Külastused kuvatakse interaktiivsel maailmakaardil ning neid saab filtreerida riigi, aasta ja otsingu järgi.',
-    clearFilters: 'Lähtesta filtrid',
+    clearFilters: 'Tühjenda filtrid',
     filtersTitle: 'Filtrid',
     country: 'Riik',
     year: 'Aasta',
@@ -266,10 +266,25 @@ function restyleMap() {
 
 function populateFilters(meta = {}) {
   const riigid = meta.riigid || [];
-  const aastad = meta.aastad || [];
+  const aastad = (meta.aastad || [])
+    .map((aasta) => Number.parseInt(String(aasta), 10))
+    .filter((aasta) => Number.isFinite(aasta));
+
+  const fallbackYears = state.allVisits
+    .map((item) => Number.parseInt(String(item.aasta || ''), 10))
+    .filter((aasta) => Number.isFinite(aasta));
+
+  const sourceYears = aastad.length ? aastad : fallbackYears;
+  const minYear = sourceYears.length ? Math.min(...sourceYears) : 2026;
+  const maxYear = Math.max(2026, ...(sourceYears.length ? sourceYears : [2026]));
+  const consecutiveYears = [];
+
+  for (let year = maxYear; year >= minYear; year -= 1) {
+    consecutiveYears.push(String(year));
+  }
 
   elements.countryFilter.innerHTML = `<option value="">${escapeHtml(t('allCountries'))}</option>` + riigid.map((riik) => `<option value="${escapeHtml(riik)}">${escapeHtml(riik)}</option>`).join('');
-  elements.yearFilter.innerHTML = `<option value="">${escapeHtml(t('allYears'))}</option>` + aastad.map((aasta) => `<option value="${escapeHtml(aasta)}">${escapeHtml(aasta)}</option>`).join('');
+  elements.yearFilter.innerHTML = `<option value="">${escapeHtml(t('allYears'))}</option>` + consecutiveYears.map((aasta) => `<option value="${escapeHtml(aasta)}">${escapeHtml(aasta)}</option>`).join('');
 
   if (state.filters.riik) {
     elements.countryFilter.value = state.filters.riik;

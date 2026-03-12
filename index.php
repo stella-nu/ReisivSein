@@ -24,7 +24,7 @@
           Külastused kuvatakse interaktiivsel maailmakaardil ning neid saab filtreerida riigi, aasta ja otsingu järgi.
         </p>
         <div class="hero__actions">
-          <button id="clearFilters" class="button button--ghost" type="button">Lähtesta filtrid</button>
+          <button id="clearFilters" class="button button--ghost" type="button">Tühjenda filtrid</button>
         </div>
       </div>
       <div class="hero__stats">
