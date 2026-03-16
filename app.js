@@ -75,6 +75,7 @@ const translations = {
     visitsTotalLabel: 'Kokku külastusi',
     countriesTotalLabel: 'Riike kaardil',
     selectedCountryLabel: 'Valitud riik',
+    closeModal: 'Sulge',
     noResults: 'Valitud filtritega vasteid ei leitud.',
     detailsButton: 'Vaata lähemalt',
     unknownPlace: 'Teadmata koht',
@@ -86,7 +87,7 @@ const translations = {
     themeLight: '☀️ Hele vaade'
   },
   en: {
-    pageTitle: 'Reisiv wall',
+    pageTitle: 'Travel Wall',
     heroText: 'Visits are shown on an interactive world map and can be filtered by country, year, and search.',
     clearFilters: 'Reset filters',
     filtersTitle: 'Filters',
@@ -108,6 +109,7 @@ const translations = {
     visitsTotalLabel: 'Total visits',
     countriesTotalLabel: 'Countries on map',
     selectedCountryLabel: 'Selected country',
+    closeModal: 'Close',
     noResults: 'No matches were found for the selected filters.',
     detailsButton: 'View details',
     unknownPlace: 'Unknown place',
@@ -118,6 +120,37 @@ const translations = {
     themeDark: '🌙 Dark mode',
     themeLight: '☀️ Light mode'
   }
+};
+
+const countryNameTranslations = {
+  Prantsusmaa: 'France',
+  Saksamaa: 'Germany',
+  Soome: 'Finland',
+  Hispaania: 'Spain',
+  Itaalia: 'Italy',
+  Portugal: 'Portugal'
+};
+
+const cityNameTranslations = {
+  Pariis: 'Paris',
+  Munchen: 'Munich',
+  Rooma: 'Rome',
+  Lissabon: 'Lisbon',
+  Helsingi: 'Helsinki',
+  Berliin: 'Berlin',
+  Lyon: 'Lyon',
+  Madrid: 'Madrid'
+};
+
+const descriptionTranslations = {
+  'Postkaardi pohjal on teada kulastus Pariisi. Tapsem info osaleja voi kulastuse eesmargi kohta puudub.': 'Based on a postcard, a visit to Paris is known. More detailed information about participants or the purpose of the trip is unavailable.',
+  'Postkaardi pohjal on teada kulastus Lyoni. Tapsem info osaleja voi kulastuse eesmargi kohta puudub.': 'Based on a postcard, a visit to Lyon is known. More detailed information about participants or the purpose of the trip is unavailable.',
+  'Postkaardi pohjal on teada kulastus Munchenisse. Tapsem info osaleja voi kulastuse eesmargi kohta puudub.': 'Based on a postcard, a visit to Munich is known. More detailed information about participants or the purpose of the trip is unavailable.',
+  'Postkaardi pohjal on teada kulastus Berliini. Tapsem info osaleja voi kulastuse eesmargi kohta puudub.': 'Based on a postcard, a visit to Berlin is known. More detailed information about participants or the purpose of the trip is unavailable.',
+  'Postkaardi pohjal on teada kulastus Helsingisse. Tapsem info osaleja voi kulastuse eesmargi kohta puudub.': 'Based on a postcard, a visit to Helsinki is known. More detailed information about participants or the purpose of the trip is unavailable.',
+  'Postkaardi pohjal on teada kulastus Madridi. Tapsem info osaleja voi kulastuse eesmargi kohta puudub.': 'Based on a postcard, a visit to Madrid is known. More detailed information about participants or the purpose of the trip is unavailable.',
+  'Postkaardi pohjal on teada kulastus Rooma. Tapsem info osaleja voi kulastuse eesmargi kohta puudub.': 'Based on a postcard, a visit to Rome is known. More detailed information about participants or the purpose of the trip is unavailable.',
+  'Postkaardi pohjal on teada kulastus Lissaboni. Tapsem info osaleja voi kulastuse eesmargi kohta puudub.': 'Based on a postcard, a visit to Lisbon is known. More detailed information about participants or the purpose of the trip is unavailable.'
 };
 
 init();
@@ -236,6 +269,7 @@ function applyTranslations() {
   elements.labelVisitsTotal.textContent = t('visitsTotalLabel');
   elements.labelCountriesTotal.textContent = t('countriesTotalLabel');
   elements.labelSelectedCountry.textContent = t('selectedCountryLabel');
+  elements.closeModal.setAttribute('aria-label', t('closeModal'));
   elements.resultsInfo.textContent = t('loadingData');
   elements.translateToggle.textContent = state.language === 'et' ? 'EN' : 'ET';
   applyTheme(document.body.dataset.theme || 'light');
@@ -283,7 +317,7 @@ function populateFilters(meta = {}) {
     consecutiveYears.push(String(year));
   }
 
-  elements.countryFilter.innerHTML = `<option value="">${escapeHtml(t('allCountries'))}</option>` + riigid.map((riik) => `<option value="${escapeHtml(riik)}">${escapeHtml(riik)}</option>`).join('');
+  elements.countryFilter.innerHTML = `<option value="">${escapeHtml(t('allCountries'))}</option>` + riigid.map((riik) => `<option value="${escapeHtml(riik)}">${escapeHtml(getDisplayCountryName(riik))}</option>`).join('');
   elements.yearFilter.innerHTML = `<option value="">${escapeHtml(t('allYears'))}</option>` + consecutiveYears.map((aasta) => `<option value="${escapeHtml(aasta)}">${escapeHtml(aasta)}</option>`).join('');
 
   if (state.filters.riik) {
@@ -316,14 +350,14 @@ function renderSummary(filtered) {
   elements.resultsInfo.textContent = t('resultsFound')(filtered.length, state.allVisits.length);
   elements.visitsTotal.textContent = filtered.length;
   elements.countriesTotal.textContent = new Set(filtered.map((item) => item.riik)).size;
-  elements.selectedCountry.textContent = state.filters.riik || t('selectedCountryDefault');
+  elements.selectedCountry.textContent = state.filters.riik ? getDisplayCountryName(state.filters.riik) : t('selectedCountryDefault');
 }
 
 function renderStats(stats) {
   const entries = Object.entries(stats);
   elements.statsList.innerHTML = entries.map(([riik, arv]) => `
     <li>
-      <span>${escapeHtml(riik)}</span>
+      <span>${escapeHtml(getDisplayCountryName(riik))}</span>
       <strong>${arv}</strong>
     </li>
   `).join('');
@@ -337,11 +371,11 @@ function renderCards(visits) {
 
   elements.gallery.innerHTML = visits.map((item) => `
     <article class="visit-card">
-      <img src="${escapeAttribute(item.pilt || '')}" alt="${escapeAttribute(`${item.linn}, ${item.riik}`)}">
+      <img src="${escapeAttribute(item.pilt || '')}" alt="${escapeAttribute(`${getDisplayCityName(item.linn)}, ${getDisplayCountryName(item.riik)}`)}">
       <div class="visit-card__body">
-        <div class="visit-card__meta">${escapeHtml(item.riik)} · ${escapeHtml(String(item.aasta || ''))}</div>
-        <h3>${escapeHtml(item.linn || t('unknownPlace'))}</h3>
-        <p>${escapeHtml(item.kirjeldus || '')}</p>
+        <div class="visit-card__meta">${escapeHtml(getDisplayCountryName(item.riik))} · ${escapeHtml(String(item.aasta || ''))}</div>
+        <h3>${escapeHtml(getDisplayCityName(item.linn) || t('unknownPlace'))}</h3>
+        <p>${escapeHtml(getDisplayDescription(item))}</p>
         <button class="button button--ghost visit-card__button" type="button" data-id="${escapeAttribute(item.id)}">${escapeHtml(t('detailsButton'))}</button>
       </div>
     </article>
@@ -357,11 +391,11 @@ function renderCards(visits) {
 
 function openModal(visit) {
   elements.modalImage.src = visit.pilt || '';
-  elements.modalImage.alt = `${visit.linn}, ${visit.riik}`;
-  elements.modalCountry.textContent = visit.riik || '';
-  elements.modalTitle.textContent = visit.linn || t('unknownPlace');
+  elements.modalImage.alt = `${getDisplayCityName(visit.linn)}, ${getDisplayCountryName(visit.riik)}`;
+  elements.modalCountry.textContent = getDisplayCountryName(visit.riik || '');
+  elements.modalTitle.textContent = getDisplayCityName(visit.linn) || t('unknownPlace');
   elements.modalYear.textContent = `${t('yearLabel')}: ${visit.aasta || t('unknown')}`;
-  elements.modalDescription.textContent = visit.kirjeldus || '';
+  elements.modalDescription.textContent = getDisplayDescription(visit);
   elements.modal.showModal();
 }
 
@@ -379,7 +413,7 @@ function renderMarkers(visits) {
       fillOpacity: 0.95
     });
 
-    marker.bindPopup(`<strong>${escapeHtml(item.linn)}</strong><br>${escapeHtml(item.riik)}<br>${escapeHtml(String(item.aasta || ''))}`);
+    marker.bindPopup(`<strong>${escapeHtml(getDisplayCityName(item.linn))}</strong><br>${escapeHtml(getDisplayCountryName(item.riik))}<br>${escapeHtml(String(item.aasta || ''))}`);
     marker.on('click', () => {
       state.filters.riik = item.riik;
       elements.countryFilter.value = item.riik;
@@ -423,11 +457,66 @@ function renderCountries(visits) {
         });
       }
 
-      layer.bindTooltip(`${countryName}${visitsForCountry.length ? ` · ${visitsForCountry.length} ${t('visitsWord')}` : ''}`, {
+      layer.bindTooltip(`${getDisplayCountryName(countryName)}${visitsForCountry.length ? ` · ${visitsForCountry.length} ${t('visitsWord')}` : ''}`, {
         sticky: true
       });
     }
   }).addTo(state.map);
+}
+
+function getDisplayCountryName(countryName) {
+  if (!countryName) {
+    return '';
+  }
+
+  if (state.language !== 'en') {
+    return countryName;
+  }
+
+  return countryNameTranslations[countryName] || countryName;
+}
+
+function getDisplayCityName(cityName) {
+  if (!cityName) {
+    return '';
+  }
+
+  if (state.language !== 'en') {
+    return cityName;
+  }
+
+  const normalized = normalizeText(cityName);
+
+  if (cityNameTranslations[cityName]) {
+    return cityNameTranslations[cityName];
+  }
+
+  return cityNameTranslations[normalized] || cityName;
+}
+
+function normalizeText(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replaceAll('õ', 'o')
+    .replaceAll('Õ', 'O')
+    .replaceAll('ä', 'a')
+    .replaceAll('Ä', 'A')
+    .replaceAll('ö', 'o')
+    .replaceAll('Ö', 'O')
+    .replaceAll('ü', 'u')
+    .replaceAll('Ü', 'U');
+}
+
+function getDisplayDescription(visit) {
+  const description = visit?.kirjeldus || '';
+
+  if (state.language !== 'en') {
+    return description;
+  }
+
+  const normalized = normalizeText(description);
+  return descriptionTranslations[normalized] || description;
 }
 
 function styleFeature(feature, activeCountryCodes = new Set(getFilteredVisits().map((item) => item.riigiKood))) {
